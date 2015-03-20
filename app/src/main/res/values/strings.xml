@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">RouteTracker</string>
     <string name="title_activity_route">Route</string>
+    <string name="google_maps_key">AIzaSyCDVfTrcjyD84_5-xyzV498gxbLFH3yLhc</string>
 </resources>
