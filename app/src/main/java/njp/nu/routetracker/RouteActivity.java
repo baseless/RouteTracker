@@ -18,8 +18,6 @@ import java.util.Random;
 public class RouteActivity extends FragmentActivity {
 
     private RouteApplication app;
-    private RouteService routeService;
-    private boolean serviceBound = false;
     private RouteFragment routeMap;
     private double demo_lat = 0;
     private double demo_long = 0;
@@ -27,13 +25,9 @@ public class RouteActivity extends FragmentActivity {
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            updateMap();
+            updatePosition();
         }
     };
-
-    private void updateMap() {
-        Log.i("", "Broadcast received!!");
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +39,6 @@ public class RouteActivity extends FragmentActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Intent serviceIntent = new Intent(this, RouteService.class);
-        bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
         initializeMapFragment();
         registerReceiver(receiver, new IntentFilter("com.hmkcode.android.USER_ACTION"));
     }
@@ -54,10 +46,6 @@ public class RouteActivity extends FragmentActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (serviceBound) {
-            unbindService(serviceConnection);
-            serviceBound = false;
-        }
         unregisterReceiver(receiver);
     }
 
@@ -78,23 +66,13 @@ public class RouteActivity extends FragmentActivity {
         demo_lat = coords.get(coords.size()-1).latitude + r.nextInt(10) * 0.0001;                //DEMO
         demo_long = coords.get(coords.size()-1).longitude + r.nextInt(10) * 0.0001;              //DEMO
         routeMap.addPosition(new LatLng(demo_lat, demo_long));                                   //här kommer gps koordinat addas istället
-            Log.i("onRouteAddClick", routeService.test());
     }
 
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            Log.i("serviceConnection", "onServiceConnected");
-            RouteService.RouteServiceBinder binder = (RouteService.RouteServiceBinder) service;
-            routeService = binder.getService();
-            initializeMapFragment();
-            serviceBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            serviceBound = false;
-        }
-    };
+    private void updatePosition() {
+        Random r = new Random();
+        List<LatLng> coords = ((RouteApplication)getApplicationContext()).getRouteCoordinates(); //DEMO
+        demo_lat = coords.get(coords.size()-1).latitude + r.nextInt(10) * 0.00001;                //DEMO
+        demo_long = coords.get(coords.size()-1).longitude + r.nextInt(10) * 0.00001;              //DEMO
+        routeMap.addPosition(new LatLng(demo_lat, demo_long));
+    }
 }
