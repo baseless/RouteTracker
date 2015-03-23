@@ -88,18 +88,12 @@ public class Database extends SQLiteOpenHelper{
 
     public List<Route> getLatestRoutes(int rid) {
         List<Route> routes = new ArrayList<Route>();
-        String query = "SELECT * FROM " + routeName + " WHERE "
-                + positionId + " = " + rid;
+        String query = "SELECT * FROM " + routeName + " ORDER BY "
+                + routeId + " = " + rid + "DESC limit " + 10;
         Log.e(logger, query);
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(query, null);
-        int fixedSize = c.getCount(); //return number of rows
-        if (fixedSize > 10) {
-            int lastTenValues = fixedSize - 10;
-            for (int i = 0; i < lastTenValues; i++) {
-                c.moveToNext();
-            }
-        } else if (c != null) {
+         if (c != null) {
             c.moveToFirst();
         }
         Route r = new Route();
@@ -112,18 +106,12 @@ public class Database extends SQLiteOpenHelper{
 
     public List<Position> getPositions(int id) {
         List<Position> positions = new ArrayList<Position>();
-        String query = "SELECT * FROM " + positionName + " WHERE "
-                + positionId + " = " + id;
+        String query = "SELECT * FROM " + positionName + " ORDER BY "
+                + positionId + " = " + id + "DESC limit " + 10;
         Log.e(logger, query);
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(query, null);
-        int fixedSize = c.getCount(); //return number of rows
-        if (fixedSize > 10) {
-            int lastTenValues = fixedSize - 10;
-            for (int i = 0; i < lastTenValues; i++) {
-                c.moveToNext();
-            }
-        } else if (c != null) {
+         if (c != null) {
             c.moveToFirst();
         }
         Position p = new Position();
