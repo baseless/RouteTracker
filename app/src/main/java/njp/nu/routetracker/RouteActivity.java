@@ -63,14 +63,6 @@ public class RouteActivity extends FragmentActivity {
 
     }
 
-    public void onRouteAddClick(View v) {                                                         //Demo metod för att simulera en timead service
-        Random r = new Random();
-        List<LatLng> coords = ((RouteApplication)getApplicationContext()).getRouteCoordinates(); //DEMO
-        demo_lat = coords.get(coords.size()-1).latitude + r.nextInt(10) * 0.0001;                //DEMO
-        demo_long = coords.get(coords.size()-1).longitude + r.nextInt(10) * 0.0001;              //DEMO
-        routeMap.addPosition(new LatLng(demo_lat, demo_long));                                   //här kommer gps koordinat addas istället
-    }
-
     private void updatePanel() {
         Random r = new Random();
         double speed = ((double)r.nextInt(10) * 4.0 + 2.0) / 10;
