@@ -27,15 +27,17 @@ public class RouteFragment extends SupportMapFragment implements OnMapReadyCallb
     private Polyline poly;
 
     public void initializeRoute(List<LatLng> coords, float zoom) {
-        Log.i("AMP", "Number of stored coords: " + coords.size());
         this.coords = coords;
         this.zoom = zoom;
         initializeMap();
     }
 
     public void addPosition(LatLng position) {
-        Log.i("MAP", "Adding map position");
         coords.add(position);
+        updateMap();
+    }
+
+    public void updateMap() {
         if(!initializeMap()) {
             drawPolyline();
             moveMap();
@@ -44,7 +46,6 @@ public class RouteFragment extends SupportMapFragment implements OnMapReadyCallb
 
     private boolean initializeMap() { //returns false if no need to initialize
         if(map == null) {
-            Log.i("MAP", "Initializing map");
             this.getMapAsync(this);
             return true;
         }
@@ -53,7 +54,6 @@ public class RouteFragment extends SupportMapFragment implements OnMapReadyCallb
 
     private void drawAllMapPositions() {
         if(coords.size() > 0) {
-            Log.i("MAP", "Redrawing all map positions");
             marker = new MarkerOptions(); //start marker
             marker.position(coords.get(0));
 
@@ -64,7 +64,6 @@ public class RouteFragment extends SupportMapFragment implements OnMapReadyCallb
     }
 
     private void moveMap() {
-        Log.i("MAP", "Moving map");
         CameraUpdate camera = CameraUpdateFactory.newLatLngZoom(coords.get(coords.size()-1), zoom); // center and zoom camera
         map.moveCamera(camera);
     }
@@ -82,7 +81,6 @@ public class RouteFragment extends SupportMapFragment implements OnMapReadyCallb
     }
 
     public void onMapReady(GoogleMap map) {
-        Log.i("MAP", "Map ready for use");
         this.map = map;
         drawAllMapPositions();
     }
