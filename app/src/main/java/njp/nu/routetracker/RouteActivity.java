@@ -11,6 +11,8 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
+
 import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 import java.util.Random;
@@ -25,6 +27,7 @@ public class RouteActivity extends FragmentActivity {
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            updatePanel();
             updatePosition();
         }
     };
@@ -66,6 +69,17 @@ public class RouteActivity extends FragmentActivity {
         demo_lat = coords.get(coords.size()-1).latitude + r.nextInt(10) * 0.0001;                //DEMO
         demo_long = coords.get(coords.size()-1).longitude + r.nextInt(10) * 0.0001;              //DEMO
         routeMap.addPosition(new LatLng(demo_lat, demo_long));                                   //här kommer gps koordinat addas istället
+    }
+
+    private void updatePanel() {
+        Random r = new Random();
+        double speed = ((double)r.nextInt(10) * 4.0 + 2.0) / 10;
+        double speed2 = ((double)r.nextInt(4) * 4.0 + 10.0) / 10;
+        TextView curSpeed = (TextView)findViewById(R.id.viewCurrentSpeed);
+        TextView avgSpeed = (TextView)findViewById(R.id.viewAvgSpeed);
+        TextView time = (TextView)findViewById(R.id.viewSpentTime);
+        curSpeed.setText(Double.toString(speed) + " Km/h");
+        avgSpeed.setText(Double.toString(speed2) + " Km/h");
     }
 
     private void updatePosition() {
