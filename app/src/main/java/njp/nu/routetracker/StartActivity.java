@@ -12,8 +12,8 @@ public class StartActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
-        app = (RouteApplication)getApplicationContext();
         setContentView(R.layout.activity_start);
+        app = (RouteApplication)getApplicationContext();
     }
 
     public void onStartClick(View v) {

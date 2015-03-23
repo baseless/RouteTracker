@@ -55,7 +55,8 @@
             android:layout_gravity="start|top"
             android:text="again?"
             android:textColor="#A9A9A9"
-            android:background="@drawable/shape"/>
+            android:background="@drawable/shape"
+            android:onClick="onRestartClick" />
     </GridLayout>
 
 </RelativeLayout>

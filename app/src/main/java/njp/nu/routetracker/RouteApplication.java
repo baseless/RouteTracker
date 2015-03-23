@@ -6,44 +6,57 @@ package njp.nu.routetracker;
 
 import android.app.Application;
 import android.content.Intent;
+import android.location.Location;
 import android.util.Log;
-import android.view.View;
-
 import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import njp.nu.routetracker.services.RouteService;
 
 public class RouteApplication extends Application {
 
-    Timer routeTimer = new Timer();
-    private List<LatLng> routeCoordinates; //Coordinate list, used primarily by route fragment - NO add methods here, use mapfragment to add
+    private Timer routeTimer;
+    private List<Location> routeLocations;
+    private List<LatLng> routeLatLng;
+    private RouteService routeService;
+
 
     public void clearRouteCoordinates() {
-        if(routeCoordinates != null)
-            routeCoordinates.clear();
+        if(routeLatLng != null)
+            routeLatLng.clear();
+        if(routeLocations != null)
+            routeLocations.clear();
     }
 
     public void startRoute() {
         clearRouteCoordinates();
+        routeTimer = new Timer();
         routeTimer.scheduleAtFixedRate(routePulse, 0, 500);
     }
 
     public void stopRoute() {
         routeTimer.cancel();
+        routeTimer.purge();
     }
 
     public List<LatLng> getRouteCoordinates() {
-        if(routeCoordinates == null)
-            routeCoordinates = new ArrayList<>();
-        return routeCoordinates;
+        if(routeLatLng == null)
+            routeLatLng = new ArrayList<>();
+        return routeLatLng;
+    }
+
+    public List<Location> getRouteLocations() {
+        if(routeLocations == null)
+            routeLocations = new ArrayList<>();
+        return routeLocations;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        routeService = new RouteService(this, getRouteLocations(), getRouteCoordinates());
     }
 
     @Override
@@ -60,7 +73,8 @@ public class RouteApplication extends Application {
 
     private void broadcastRoutePulse() {
         Log.i("Broadcast", "Pulse sent");
-        Intent i = new Intent("com.hmkcode.android.USER_ACTION");
+        routeService.parseCurrentPosition();
+        Intent i = new Intent("njp.nu.android.ROUTE_UPDATE");
         sendBroadcast(i);
     }
 }
