@@ -22,9 +22,17 @@ public class RouteApplication extends Application {
     private Timer routeTimer;
     private List<Location> routeLocations;
     private List<LatLng> routeLatLng;
-    //private RouteService routeService;
+    private float routeDistance;
     private DatabaseService dbService;
     private ScheduledLocationService locationService;
+
+    public void updateRouteDistance(float routeDistance) {
+        this.routeDistance += routeDistance;
+    }
+
+    public float getRouteDistance() {
+        return routeDistance;
+    }
 
     @Override
     public void onCreate() {
@@ -51,9 +59,14 @@ public class RouteApplication extends Application {
     public void startRoute() {
         Log.i("", "startRoute");
         clearRouteCoordinates();
+        routeDistance = 0;
         locationService.startLocationUpdates();
         routeTimer = new Timer();
-        routeTimer.scheduleAtFixedRate(routePulse, 100, 500);
+        routeTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                broadcastRoutePulse();
+            }} , 100, 500);
     }
 
     public void stopRoute() {
@@ -78,13 +91,6 @@ public class RouteApplication extends Application {
     public void onTerminate() {
         super.onTerminate();
     }
-
-    TimerTask routePulse = new TimerTask() {
-        @Override
-        public void run() {
-            broadcastRoutePulse();
-        }
-    };
 
     private void broadcastRoutePulse() {
         Log.i("Broadcast", "Pulse sent");

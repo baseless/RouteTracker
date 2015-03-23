@@ -60,10 +60,10 @@ public class RouteActivity extends FragmentActivity {
 
     private void updatePanel() {
         TextView curSpeed = (TextView)findViewById(R.id.viewCurrentSpeed);
-        TextView avgSpeed = (TextView)findViewById(R.id.viewAvgSpeed);
+        TextView dist = (TextView)findViewById(R.id.viewDistance);
         TextView time = (TextView)findViewById(R.id.viewSpentTime);
-        curSpeed.setText(statisticsService.getCurrentSpeed() + " Km/h");
-        avgSpeed.setText(statisticsService.getAvgSpeed() + " Km/h");
+        curSpeed.setText(statisticsService.getCurrentSpeed() + " m/s");
+        dist.setText(String.format("%.2f",app.getRouteDistance()) + " m");
         time.setText(statisticsService.getElapsedTime());
     }
 

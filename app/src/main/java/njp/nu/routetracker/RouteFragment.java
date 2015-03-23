@@ -35,6 +35,8 @@ public class RouteFragment extends SupportMapFragment implements OnMapReadyCallb
 
     public void updateMap() {
         if(!initializeMap()) {
+            if(marker == null && coords.size() > 0)
+                setStartMarker();
             drawPolyline();
             moveMap();
         }
@@ -50,13 +52,17 @@ public class RouteFragment extends SupportMapFragment implements OnMapReadyCallb
 
     private void drawAllMapPositions() {
         if(coords.size() > 0) {
-            marker = new MarkerOptions(); //start marker
-            marker.position(coords.get(0));
-
-            map.addMarker(marker);
+            if(marker == null)
+                setStartMarker();
             moveMap();
         }
         initializePolyline(); //draw lines
+    }
+
+    private void setStartMarker() {
+        marker = new MarkerOptions(); //start marker
+        marker.position(coords.get(0));
+        map.addMarker(marker);
     }
 
     private void moveMap() {

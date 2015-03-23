@@ -12,6 +12,8 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
+
+import njp.nu.routetracker.RouteApplication;
 import njp.nu.routetracker._old.LocationService;
 
 public class ScheduledLocationService implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -20,14 +22,16 @@ public class ScheduledLocationService implements GoogleApiClient.ConnectionCallb
     private static final String TAG = LocationService.class.getSimpleName();
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
+    private RouteApplication app;
     private Context appContext;
     private List<Location> routeLocations;
     private List<LatLng> routeLatLng;
     private long routeId;
 
     /* Constructor */
-    public ScheduledLocationService(Context appContext, List<Location> routeLocations, List<LatLng> routeLatLng, DatabaseService dbService) {
-        this.appContext = appContext;
+    public ScheduledLocationService(RouteApplication app, List<Location> routeLocations, List<LatLng> routeLatLng, DatabaseService dbService) {
+        this.appContext = app.getApplicationContext();
+        this.app = app;
         this.dbService = dbService;
         this.routeLatLng = routeLatLng;
         this.routeLocations = routeLocations;
@@ -102,6 +106,13 @@ public class ScheduledLocationService implements GoogleApiClient.ConnectionCallb
             routeLocations.add(location);
             routeLatLng.add(new LatLng(location.getLatitude(), location.getLongitude()));
             dbService.insertPosition(location, routeId);
+            if(routeLocations.size() > 1)
+                addDistance(location);
         }
+    }
+
+    private void addDistance(Location current) {
+        Location previous = routeLocations.get(routeLocations.size()-2);
+        app.updateRouteDistance(current.distanceTo(previous));
     }
 }

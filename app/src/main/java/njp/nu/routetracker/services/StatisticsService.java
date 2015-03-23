@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class StatisticsService {
 
@@ -16,20 +17,27 @@ public class StatisticsService {
         this.routeLocations = routeLocations;
     }
 
-    public String getAvgSpeed() {
-        return null;
+    public float getAverageSpeed(float distMeters) {
+        if(routeLocations.size() > 1) {
+            long first = routeLocations.get(0).getTime();
+            long last = routeLocations.get(routeLocations.size() - 1).getTime();
+            return distMeters / TimeUnit.MILLISECONDS.toSeconds(last - first);
+        }
+        else
+            return 0;
     }
 
     public String getCurrentSpeed() {
-        return null;
+        if(routeLocations != null && routeLocations.size() > 1)
+            return Double.toString(routeLocations.get(routeLocations.size()-1).getSpeed());
+        else
+            return "0.0";
     }
 
     public String getElapsedTime () {
         if(routeLocations.size() > 1) {
             long first = routeLocations.get(0).getTime();
             long last = routeLocations.get(routeLocations.size() - 1).getTime();
-            Log.d("TIME FIRST", String.valueOf(first));
-            Log.d("TIME LAST", String.valueOf(last));
             return millisecondsToTime(last - first);
         }
         else
@@ -37,8 +45,29 @@ public class StatisticsService {
     }
 
     private String millisecondsToTime(long ms) {
-        Date date = new Date(ms);
-        DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
-        return formatter.format(date);
+        long hours = TimeUnit.MILLISECONDS.toHours(ms);
+        if(hours > 0)
+            ms -= TimeUnit.HOURS.toMillis(hours);
+
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(ms);
+        if(minutes > 0)
+            ms -= TimeUnit.MINUTES.toMillis(minutes);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(ms);
+
+        String result = "";
+
+        if(hours < 10)
+            result += "0";
+        result += hours + ":";
+
+        if(minutes < 10)
+            result += "0";
+        result += minutes + ":";
+
+        if(seconds < 10)
+            result += "0";
+        result += seconds;
+
+        return result;
     }
 }
