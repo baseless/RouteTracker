@@ -54,7 +54,7 @@ public class RouteActivity extends FragmentActivity {
 
     private void initializeMapFragment() {
         routeMap = (RouteFragment) getSupportFragmentManager().findFragmentById(R.id.routeMapFragment);
-        List<LatLng> coords = ((RouteApplication)getApplicationContext()).getRouteCoordinates();
+        List<LatLng> coords = app.getRouteCoordinates();
         demo_lat = 56.046887;
         demo_long = 14.146163;
         if(coords.size() == 0)
@@ -76,7 +76,7 @@ public class RouteActivity extends FragmentActivity {
 
     private void updatePosition() {
         Random r = new Random();
-        List<LatLng> coords = ((RouteApplication)getApplicationContext()).getRouteCoordinates(); //DEMO
+        List<LatLng> coords = app.getRouteCoordinates(); //DEMO
         demo_lat = coords.get(coords.size()-1).latitude + r.nextInt(10) * 0.00001;                //DEMO
         demo_long = coords.get(coords.size()-1).longitude + r.nextInt(10) * 0.00001;              //DEMO
         routeMap.addPosition(new LatLng(demo_lat, demo_long));
