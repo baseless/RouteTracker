@@ -1,8 +1,11 @@
 package njp.nu.routetracker;
 
+/**
+ * Created by Daniel Ryhle on 2015-03-23.
+ */
+
 import android.app.Application;
 import android.content.Intent;
-
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;

@@ -1,18 +1,16 @@
 package njp.nu.routetracker;
 
+/**
+ * Created by Daniel Ryhle on 2015-03-23.
+ */
+
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
-
 import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 import java.util.Random;

@@ -1,8 +1,11 @@
 package njp.nu.routetracker;
 
+/**
+ * Created by Daniel Ryhle on 2015-03-23.
+ */
+
 import android.graphics.Color;
 import android.util.Log;
-
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -12,7 +15,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-
 import java.util.List;
 
 public class RouteFragment extends SupportMapFragment implements OnMapReadyCallback {
