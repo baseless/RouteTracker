@@ -2,23 +2,17 @@ package njp.nu.routetracker.services;
 
 import android.content.Context;
 import android.location.Location;
-
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
-
 import java.util.List;
-
 import njp.nu.routetracker._old.LocationService;
-import njp.nu.routetracker.domain.Position;
-import njp.nu.routetracker.domain.Route;
 
 public class ScheduledLocationService implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
@@ -86,8 +80,8 @@ public class ScheduledLocationService implements GoogleApiClient.ConnectionCallb
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         Log.d(TAG, "Shutting down location updates..");
         dbService.updateRouteStopTime(routeId);
-        for(Route r : dbService.getRoutes())
-            Log.i("", r.getRouteID() + "--" + r.getStartTime() + "--" + r.getStopTime());
+        //for(Route r : dbService.getRoutes())
+        //    Log.i("", r.getRouteID() + "--" + r.getStartTime() + "--" + r.getStopTime());
     }
 
     /* Check whether GPS is enabled */
@@ -104,9 +98,7 @@ public class ScheduledLocationService implements GoogleApiClient.ConnectionCallb
     /* On location change */
     @Override
     public void onLocationChanged(Location location) {
-        Log.i("", "LOCATION UPDATED");
         if(location != null && location.getLatitude() > 0) {
-            Log.i("", "RUNNING UPDATE STUFF");
             routeLocations.add(location);
             routeLatLng.add(new LatLng(location.getLatitude(), location.getLongitude()));
             dbService.insertPosition(location, routeId);
