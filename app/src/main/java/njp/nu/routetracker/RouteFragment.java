@@ -5,6 +5,7 @@ package njp.nu.routetracker;
  */
 
 import android.graphics.Color;
+import android.location.Location;
 import android.util.Log;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -30,11 +31,6 @@ public class RouteFragment extends SupportMapFragment implements OnMapReadyCallb
         this.coords = coords;
         this.zoom = zoom;
         initializeMap();
-    }
-
-    public void addPosition(LatLng position) {
-        coords.add(position);
-        updateMap();
     }
 
     public void updateMap() {
