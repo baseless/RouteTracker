@@ -1,15 +1,10 @@
-package njp.nu.routetracker;
+package njp.nu.routetracker.services;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RouteService extends Service {
 
