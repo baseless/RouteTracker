@@ -1,16 +1,18 @@
-package njp.nu.routetracker;
+package njp.nu.routetracker.services;
 
+/**
+ * Created by Mattias Hjalmarsson on 2015-03-23.
+ */
 
 import android.content.Context;
 import android.location.Location;
-
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import njp.nu.routetracker.RouteActivity;
 
 
 public class LocationService implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
