@@ -55,22 +55,25 @@ public class RouteFragment extends SupportMapFragment implements OnMapReadyCallb
 
             map.addMarker(marker);
             moveMap();
-            initializePolyline(); //draw lines
         }
+        initializePolyline(); //draw lines
     }
 
     private void moveMap() {
-        CameraUpdate camera = CameraUpdateFactory.newLatLngZoom(coords.get(coords.size()-1), zoom); // center and zoom camera
-        map.moveCamera(camera);
+        if(coords != null && coords.size() > 0) {
+            CameraUpdate camera = CameraUpdateFactory.newLatLngZoom(coords.get(coords.size() - 1), zoom); // center and zoom camera
+            map.moveCamera(camera);
+        }
     }
 
     private void drawPolyline() {
-        poly.setPoints(coords);
+        if(coords != null && coords.size() > 1)
+            poly.setPoints(coords);
     }
 
     private void initializePolyline() {
         polyOpts = new PolylineOptions();
-        polyOpts.width(2);
+        polyOpts.width(12);
         polyOpts.color(Color.BLUE);
         poly =  map.addPolyline(polyOpts);
         drawPolyline();

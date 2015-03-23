@@ -6,39 +6,26 @@ package njp.nu.routetracker.domain;
 
 public class Route {
     private int routeID;
-    private int stopTime;
-    private int startTime;
+    private String stopTime;
+    private String startTime;
 
-    public Route() {}
-    public Route(int routeID) {
-        this.routeID = routeID;
-    }
-    public Route(int routeID, int startTime) {
-        this.routeID = routeID;
+    public Route(String startTime) {
         this.startTime = startTime;
     }
-    public Route(int routeID, int startTime, int stopTime) {
-        this.routeID = routeID;
+    public Route(String startTime, String stopTime, int routeID) {
         this.startTime = startTime;
         this.stopTime = stopTime;
+        this.routeID = routeID;
     }
+
     public int getRouteID() {
         return routeID;
     }
-    public void setRouteID(int routeID) {
-        this.routeID = routeID;
-    }
-    public long getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
-    public void setStartTime(int startTime) {
-        this.startTime = startTime;
-    }
-    public long getStopTime() {
+    public String getStopTime() {
         return stopTime;
-    }
-    public void setStopTime(int stopTime) {
-        this.stopTime = stopTime;
     }
 }
 

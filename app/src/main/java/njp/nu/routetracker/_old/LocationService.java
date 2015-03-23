@@ -1,4 +1,4 @@
-package njp.nu.routetracker.services;
+package njp.nu.routetracker._old;
 
 /**
  * Created by Mattias Hjalmarsson on 2015-03-23.
@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationServices;
 
 

@@ -25,17 +25,20 @@ public class StatisticsService {
     }
 
     public String getElapsedTime () {
-        long first = routeLocations.get(0).getTime();
-        long last = routeLocations.get(routeLocations.size()-1).getTime();
-        Log.d("TIME FIRST", String.valueOf(first));
-        Log.d("TIME LAST", String.valueOf(last));
-        return millisecondsToTime(last - first);
+        if(routeLocations.size() > 1) {
+            long first = routeLocations.get(0).getTime();
+            long last = routeLocations.get(routeLocations.size() - 1).getTime();
+            Log.d("TIME FIRST", String.valueOf(first));
+            Log.d("TIME LAST", String.valueOf(last));
+            return millisecondsToTime(last - first);
+        }
+        else
+            return "00:00:00";
     }
 
     private String millisecondsToTime(long ms) {
-
         Date date = new Date(ms);
-        DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
         return formatter.format(date);
     }
 }

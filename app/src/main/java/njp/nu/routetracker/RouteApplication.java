@@ -13,15 +13,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import njp.nu.routetracker.services.RouteService;
+
+import njp.nu.routetracker.services.DatabaseService;
+import njp.nu.routetracker.services.ScheduledLocationService;
 
 public class RouteApplication extends Application {
 
     private Timer routeTimer;
     private List<Location> routeLocations;
     private List<LatLng> routeLatLng;
-    private RouteService routeService;
+    //private RouteService routeService;
+    private DatabaseService dbService;
+    private ScheduledLocationService locationService;
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        dbService = new DatabaseService(this);
+        locationService = new ScheduledLocationService(this, getRouteLocations(), getRouteCoordinates(), dbService);
+    }
+
+    public boolean isGpsEnabled() {
+        return locationService.isGpsEnabled();
+    }
+
+    public boolean isWifiEnabled() {
+        return locationService.isWifiEnabled();
+    }
 
     public void clearRouteCoordinates() {
         if(routeLatLng != null)
@@ -31,12 +49,15 @@ public class RouteApplication extends Application {
     }
 
     public void startRoute() {
+        Log.i("", "startRoute");
         clearRouteCoordinates();
+        locationService.startLocationUpdates();
         routeTimer = new Timer();
-        routeTimer.scheduleAtFixedRate(routePulse, 0, 500);
+        routeTimer.scheduleAtFixedRate(routePulse, 100, 500);
     }
 
     public void stopRoute() {
+        locationService.stopLocationUpdates();
         routeTimer.cancel();
         routeTimer.purge();
     }
@@ -54,12 +75,6 @@ public class RouteApplication extends Application {
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        routeService = new RouteService(this, getRouteLocations(), getRouteCoordinates());
-    }
-
-    @Override
     public void onTerminate() {
         super.onTerminate();
     }
@@ -73,7 +88,6 @@ public class RouteApplication extends Application {
 
     private void broadcastRoutePulse() {
         Log.i("Broadcast", "Pulse sent");
-        routeService.parseCurrentPosition();
         Intent i = new Intent("njp.nu.android.ROUTE_UPDATE");
         sendBroadcast(i);
     }

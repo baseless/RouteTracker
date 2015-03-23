@@ -9,50 +9,46 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+import android.location.Location;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import njp.nu.routetracker.domain.Position;
 import njp.nu.routetracker.domain.Route;
 
 public class DatabaseService extends SQLiteOpenHelper{
 
-    private static final String logger = "Database";
     private static final int database_version = 1;
     private static final String nameOFDataBase = "Database name";
 
-
     //Tables names
-    private static final String routeName = "Route table 1";
-    private static final String positionName = "Posistion table 2";
+    private static final String routeName = "Routes";
+    private static final String positionName = "Locations";
 
     //Tables id;
     private static final String routeId = "routeID";
-    private static final String positionId = "PosisitionID";
-    private static final String routerForeignKey = "routerForeigen key"; //Help
+    private static final String positionId = "PositionID";
 
     //Timer, distance and coordinates
-    private static final String startTimer = "start";
-    private static final String stopTimer = "stop";
+    private static final String startTimer = "startTime";
+    private static final String stopTimer = "stopTime";
     private static final String latitude = "Latitude";
     private static final String longitude = "Longitude";
-    private static final String timeFromLastPosition = "time";
-    private static final String distanceFromLastPosition = "distance";
+    private static final String timeStamp = "timeStamp";
 
     //table create statements
     //table 1
-    private static final String createTableRouteString = "Create table"
-            + routeName + "(" + routeId + "Integer primary key,"
-            + startTimer + "long Timer," + stopTimer + " long StopTime" + ")";
+    private static final String createTableRouteString = "Create table "
+            + routeName + " ( " + routeId + " Integer primary key, "
+            + startTimer + " text, " + stopTimer + " text )";
 
     //table 2
-    private static final String createTablePositionString = "Create table"
-            + positionName + "(" + positionId + "Integer primary key,"
-            + latitude + "long Latitude," + longitude + " long Longitude, "
-            + timeFromLastPosition + "long time, " + distanceFromLastPosition + " long distance, " + ")"
-            + routerForeignKey + "integer, " + "Foreign key(" + routerForeignKey + ") references"
-            + routeName + "(" + routeId + "));";
+    private static final String createTablePositionString = "Create table "
+            + positionName + " (" + positionId + " Integer primary key, "
+            + latitude + " text, " + longitude + " text, "
+            + timeStamp + " text, "
+            + routeId + " int, " +  "Foreign key ( " + routeId + " ) references "
+            + routeName + " ( " + routeId + " ))";
 
 
     public DatabaseService(Context context) {
@@ -63,16 +59,69 @@ public class DatabaseService extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(createTableRouteString);
         db.execSQL(createTablePositionString);
-
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("Drop table if exists" + routeName);
-        db.execSQL("Drop table if exists" + positionName);
-
+        db.execSQL("Drop table if exists " + routeName);
+        db.execSQL("Drop table if exists " + positionName);
         onCreate(db);
     }
+
+    public long insertRoute() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues v = new ContentValues();
+        v.put(startTimer, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        return db.insert(routeName, null, v);
+    }
+
+    public long updateRouteStopTime(long rowId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues v = new ContentValues();
+        v.put(stopTimer, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        String selection = routeId + "=" + rowId;
+        return db.update(routeName, v, selection, null);
+    }
+
+    public long insertPosition(Location l, long parentId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues v = new ContentValues();
+        v.put(routeId, parentId);
+        v.put(latitude, l.getLatitude());
+        v.put(longitude, l.getLongitude());
+        v.put(timeStamp, l.getTime());
+        return db.insert(positionName, null, v);
+    }
+
+    public void closeDB() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        if (db != null && db.isOpen()) {
+            db.close();
+        }
+    }
+
+    public List<Route> getRoutes() {
+        List<Route> routes = new ArrayList<Route>();
+        String query = "SELECT * FROM " + routeName;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(query, null);
+
+        if(c.getCount()!=0){
+            if(c.moveToFirst()){
+                do{
+                    routes.add(new Route(
+                            c.getString(c.getColumnIndex(startTimer)),
+                            c.getString(c.getColumnIndex(stopTimer)),
+                            c.getInt(c.getColumnIndex(routeId))
+                    ));
+                }while(c.moveToNext());
+            }
+        }
+
+        return routes;
+    }
+
+/*
 
     public Route getRoute(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -84,8 +133,7 @@ public class DatabaseService extends SQLiteOpenHelper{
         if (c != null) {
             c.moveToFirst();
         }
-        Route r = new Route();
-        r.setRouteID(c.getInt(c.getColumnIndex(routeId)));
+        Route r = new Route(c.getInt(c.getColumnIndex(routeId)));
         return r;
     }
 
@@ -106,8 +154,7 @@ public class DatabaseService extends SQLiteOpenHelper{
         } else if (c != null) {
             c.moveToFirst();
         }
-        Route r = new Route();
-        r.setRouteID(c.getInt(c.getColumnIndex(routeId)));
+        Route r = new Route(c.getInt(c.getColumnIndex(routeId)));
         r.setStartTime(c.getInt(c.getColumnIndex(startTimer)));
         r.setStopTime(c.getInt(c.getColumnIndex(stopTimer)));
         routes.add(r);
@@ -134,55 +181,8 @@ public class DatabaseService extends SQLiteOpenHelper{
         p.setPositionID(c.getInt(c.getColumnIndex(positionId)));
         p.setCoordinatesLatitude(c.getLong(c.getColumnIndex(latitude)));
         p.setGetCoordinatesLongitude(c.getLong(c.getColumnIndex(longitude)));
-        p.setTimeFromLastPosition(c.getLong(c.getColumnIndex(timeFromLastPosition)));
-        p.setDistanceFromLastPosition(c.getLong(c.getColumnIndex(distanceFromLastPosition)));
         return positions;
     }
 
-    public long insertRoute(Route route) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues v = new ContentValues();
-        v.put(routeId, route.getRouteID());
-        v.put(startTimer, route.getStartTime());
-        v.put(stopTimer, route.getStopTime());
-
-        long id = db.insert(createTableRouteString, null, v);
-        return id;
-    }
-
-    public long insertPosition(Position p, Route routeId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues v = new ContentValues();
-        v.put(positionId, p.getPositionID());
-        v.put(latitude, p.getCoordinatesLatitude());
-        v.put(longitude, p.getCoordinatesLongitude());
-        v.put(timeFromLastPosition, p.getTimeFromLastPosition());
-        v.put(distanceFromLastPosition, p.getDistanceFromLastPosition());
-
-        long id = db.insert(createTablePositionString, null, v);
-        return id;
-    }
-
-    public void closeDB() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        if (db != null && db.isOpen()) {
-            db.close();
-        }
-    }
-
-    public void deleteRoutingTable(int id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(routeName, routeId + "=?",
-                new String[]{
-                        String.valueOf(id)
-                });
-    }
-
-    public void deletePositionTable(int id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(positionName, positionId + "=?",
-                new String[]{
-                        String.valueOf(id)
-                });
-    }
+*/
 }
