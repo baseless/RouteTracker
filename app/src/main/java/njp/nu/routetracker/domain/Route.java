@@ -1,5 +1,9 @@
 package njp.nu.routetracker.domain;
 
+/**
+ * Created by Andreas Svensson on 2015-03-23.
+ */
+
 public class Route {
     private int routeID;
     private int stopTime;
@@ -37,4 +41,5 @@ public class Route {
         this.stopTime = stopTime;
     }
 }
+
 

@@ -1,5 +1,9 @@
 package njp.nu.routetracker.domain;
 
+/**
+ * Created by Andreas Svensson on 2015-03-23.
+ */
+
 public class Position {
     private int positionID;
     private Route routeForeignKeyID;

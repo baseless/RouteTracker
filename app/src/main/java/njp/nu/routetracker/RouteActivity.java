@@ -1,16 +1,16 @@
 package njp.nu.routetracker;
 
+/**
+ * Created by Daniel Ryhle on 2015-03-23.
+ */
+
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
+import android.widget.TextView;
 import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 import java.util.Random;
@@ -25,6 +25,7 @@ public class RouteActivity extends FragmentActivity {
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            updatePanel();
             updatePosition();
         }
     };
@@ -51,7 +52,7 @@ public class RouteActivity extends FragmentActivity {
 
     private void initializeMapFragment() {
         routeMap = (RouteFragment) getSupportFragmentManager().findFragmentById(R.id.routeMapFragment);
-        List<LatLng> coords = ((RouteApplication)getApplicationContext()).getRouteCoordinates();
+        List<LatLng> coords = app.getRouteCoordinates();
         demo_lat = 56.046887;
         demo_long = 14.146163;
         if(coords.size() == 0)
@@ -60,17 +61,20 @@ public class RouteActivity extends FragmentActivity {
 
     }
 
-    public void onRouteAddClick(View v) {                                                         //Demo metod för att simulera en timead service
+    private void updatePanel() {
         Random r = new Random();
-        List<LatLng> coords = ((RouteApplication)getApplicationContext()).getRouteCoordinates(); //DEMO
-        demo_lat = coords.get(coords.size()-1).latitude + r.nextInt(10) * 0.0001;                //DEMO
-        demo_long = coords.get(coords.size()-1).longitude + r.nextInt(10) * 0.0001;              //DEMO
-        routeMap.addPosition(new LatLng(demo_lat, demo_long));                                   //här kommer gps koordinat addas istället
+        double speed = ((double)r.nextInt(10) * 4.0 + 2.0) / 10;
+        double speed2 = ((double)r.nextInt(4) * 4.0 + 10.0) / 10;
+        TextView curSpeed = (TextView)findViewById(R.id.viewCurrentSpeed);
+        TextView avgSpeed = (TextView)findViewById(R.id.viewAvgSpeed);
+        TextView time = (TextView)findViewById(R.id.viewSpentTime);
+        curSpeed.setText(Double.toString(speed) + " Km/h");
+        avgSpeed.setText(Double.toString(speed2) + " Km/h");
     }
 
     private void updatePosition() {
         Random r = new Random();
-        List<LatLng> coords = ((RouteApplication)getApplicationContext()).getRouteCoordinates(); //DEMO
+        List<LatLng> coords = app.getRouteCoordinates(); //DEMO
         demo_lat = coords.get(coords.size()-1).latitude + r.nextInt(10) * 0.00001;                //DEMO
         demo_long = coords.get(coords.size()-1).longitude + r.nextInt(10) * 0.00001;              //DEMO
         routeMap.addPosition(new LatLng(demo_lat, demo_long));

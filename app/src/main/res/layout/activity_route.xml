@@ -5,13 +5,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RouteActivity"
+    android:background="#424345"
     >
-    <Button
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="300px"
-        android:text="add to route"
-        android:onClick="onRouteAddClick"
-        />
+        android:layout_height="145px">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:layout_width="0dip" android:layout_weight="1.0">
+                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="60px">
+                    <LinearLayout android:layout_marginLeft="2dp" android:layout_height="wrap_content" android:layout_width="0dip" android:layout_weight=".7">
+                        <TextView android:layout_width="fill_parent" android:layout_height="match_parent" android:textColor="#ffffff" android:text="Time" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_height="wrap_content" android:layout_width="0dip" android:layout_weight=".8">
+                        <TextView android:layout_width="fill_parent" android:layout_height="match_parent" android:textColor="#ffffff" android:text="Avg speed" />
+                    </LinearLayout>
+                    <LinearLayout  android:layout_height="wrap_content" android:layout_width="100dip">
+                        <TextView android:layout_width="fill_parent" android:layout_height="match_parent" android:textColor="#ffffff" android:text="Cur speed" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="85px">
+                    <LinearLayout android:layout_marginLeft="2dp" android:layout_height="wrap_content" android:layout_width="0dip" android:layout_weight=".7">
+                        <TextView android:layout_width="fill_parent"  android:id="@+id/viewSpentTime" android:layout_height="match_parent" android:textColor="#ffffff" android:textSize="18dp" android:text="0:12:04" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_height="wrap_content" android:layout_width="0dip" android:layout_weight=".8">
+                        <TextView android:layout_width="fill_parent"  android:id="@+id/viewAvgSpeed" android:layout_height="match_parent" android:textColor="#ffffff" android:textSize="18dp" android:text="3.8 Km/h" />
+                    </LinearLayout>
+                    <LinearLayout  android:layout_height="wrap_content" android:layout_width="100dip">
+                        <TextView android:layout_width="fill_parent" android:id="@+id/viewCurrentSpeed" android:layout_height="match_parent" android:textColor="#ffffff"  android:textSize="18dp" android:text="4.1 Km/h" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <Button
+                android:layout_width="160px"
+                android:layout_marginRight="2dp"
+                android:textSize="10dp"
+                android:layout_height="fill_parent" android:text="Stop" />
+    </LinearLayout>
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
