@@ -70,6 +70,7 @@
         android:layout_marginTop="8dp"
         android:text="New route"
         android:textColor="#A9A9A9"
-        android:background="@drawable/shape" />
+        android:background="@drawable/shape"
+        android:onClick="onRestartClick" />
 
 </LinearLayout>

@@ -21,17 +21,12 @@ public class ResultActivity extends ActionBarActivity {
         setContentView(R.layout.activity_result);
         app = (RouteApplication)getApplicationContext();
         setStatistics();
-        final Animation animation = AnimationUtils.loadAnimation(this, R.anim.animation_button);
-        Button button = (Button)findViewById(R.id.startANewRoute);
-        button.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.startAnimation(animation);
-                Intent switchToRoute = new Intent(ResultActivity.this, RouteActivity.class);
-                app.startRoute();
-                startActivity(switchToRoute);
-            }
-        });
+    }
+
+    public void onRestartClick(View v) {
+        Intent switchToRoute = new Intent(ResultActivity.this, RouteActivity.class);
+        app.startRoute();
+        startActivity(switchToRoute);
     }
 
     private void setStatistics() {

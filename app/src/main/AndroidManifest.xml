@@ -31,6 +31,7 @@
             android:label="@string/title_activity_route" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -39,6 +40,7 @@
             android:label="@string/title_activity_route" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -47,9 +49,22 @@
             android:label="@string/title_activity_route" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <receiver android:name=".RouteWidget" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="njp.nu.routetracker.RouteWidget.WIDGET_START_CLICK" />
+                <action android:name="njp.nu.routetracker.RouteWidget.WIDGET_STOP_CLICK" />
+                <action android:name="njp.nu.routetracker.RouteWidget.WIDGET_ICON_CLICK" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/route_widget_info" />
+        </receiver>
     </application>
 
 </manifest>

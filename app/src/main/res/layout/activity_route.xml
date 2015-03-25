@@ -47,6 +47,7 @@
                 android:layout_height="fill_parent"
                 android:text="Stop"
                 android:textColor="#A9A9A9"
+                android:onClick="onStopClick"
                 android:background="@drawable/shape"/>
     </LinearLayout>
     <fragment

@@ -25,6 +25,7 @@ public class RouteApplication extends Application {
     private float routeDistance;
     private DatabaseService dbService;
     private ScheduledLocationService locationService;
+    private boolean isStarted = false;
 
     public void updateRouteDistance(float routeDistance) {
         this.routeDistance += routeDistance;
@@ -32,6 +33,10 @@ public class RouteApplication extends Application {
 
     public float getRouteDistance() {
         return routeDistance;
+    }
+
+    public boolean isStarted() {
+        return isStarted;
     }
 
     @Override
@@ -57,22 +62,29 @@ public class RouteApplication extends Application {
     }
 
     public void startRoute() {
-        Log.i("", "startRoute");
-        clearRouteCoordinates();
-        routeDistance = 0;
-        locationService.startLocationUpdates();
-        routeTimer = new Timer();
-        routeTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                broadcastRoutePulse();
-            }} , 100, 500);
+        if(!isStarted) {
+            isStarted = true;
+            Log.i("", "startRoute");
+            clearRouteCoordinates();
+            routeDistance = 0;
+            locationService.startLocationUpdates();
+            routeTimer = new Timer();
+            routeTimer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    broadcastRoutePulse();
+                }
+            }, 100, 500);
+        }
     }
 
     public void stopRoute() {
-        locationService.stopLocationUpdates();
-        routeTimer.cancel();
-        routeTimer.purge();
+        if(isStarted) {
+            isStarted = false;
+            locationService.stopLocationUpdates();
+            routeTimer.cancel();
+            routeTimer.purge();
+        }
     }
 
     public List<LatLng> getRouteCoordinates() {
@@ -96,5 +108,12 @@ public class RouteApplication extends Application {
         Log.i("Broadcast", "Pulse sent");
         Intent i = new Intent("njp.nu.android.ROUTE_UPDATE");
         sendBroadcast(i);
+    }
+
+    /**
+     * Created by Andreas on 2015-03-25.
+     */
+    public static class AppWidgetProvider {
+
     }
 }

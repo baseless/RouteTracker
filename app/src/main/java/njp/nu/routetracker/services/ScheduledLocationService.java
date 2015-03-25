@@ -12,14 +12,12 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
-
 import njp.nu.routetracker.RouteApplication;
-import njp.nu.routetracker._old.LocationService;
 
 public class ScheduledLocationService implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private DatabaseService dbService;
-    private static final String TAG = LocationService.class.getSimpleName();
+    private static final String TAG = ScheduledLocationService.class.getSimpleName();
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private RouteApplication app;

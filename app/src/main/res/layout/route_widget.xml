@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="horizontal"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:layout_margin="5sp"
+android:background="@drawable/shape"
+android:padding="@dimen/widget_margin"
+    >
+
+<ImageView
+    android:id="@+id/widgetImage"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:layout_gravity="center"
+    android:layout_marginLeft="5dp"
+    android:src="@drawable/icon_njp" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_width="0dip"
+        android:layout_weight=".7"
+        android:padding="@dimen/widget_margin"
+        >
+            <Button
+                android:id="@+id/startWidgetButton"
+                android:layout_width="wrap_content"
+                android:layout_height="0dip"
+                android:layout_weight=".5"
+                android:layout_gravity="center"
+                android:text="Start"
+                android:layout_margin="6dp"
+                android:background="@drawable/shape"
+                android:textColor="#A9A9A9" />
+            <Button
+                android:id="@+id/stopWidgetButton"
+                android:layout_width="wrap_content"
+                android:layout_height="0dip"
+                android:layout_weight=".5"
+                android:layout_gravity="center"
+                android:layout_margin="6dp"
+                android:text="Stop"
+                android:background="@drawable/shape"
+                android:textColor="#A9A9A9" />
+        </LinearLayout>
+</LinearLayout>
