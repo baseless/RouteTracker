@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.TextView;
 
 import njp.nu.routetracker.services.StatisticsService;
@@ -18,12 +21,17 @@ public class ResultActivity extends ActionBarActivity {
         setContentView(R.layout.activity_result);
         app = (RouteApplication)getApplicationContext();
         setStatistics();
-    }
-
-    public void onRestartClick(View v) {
-        Intent switchToRoute = new Intent(ResultActivity.this, RouteActivity.class);
-        app.startRoute();
-        startActivity(switchToRoute);
+        final Animation animation = AnimationUtils.loadAnimation(this, R.anim.animation_button);
+        Button button = (Button)findViewById(R.id.startANewRoute);
+        button.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.startAnimation(animation);
+                Intent switchToRoute = new Intent(ResultActivity.this, RouteActivity.class);
+                app.startRoute();
+                startActivity(switchToRoute);
+            }
+        });
     }
 
     private void setStatistics() {

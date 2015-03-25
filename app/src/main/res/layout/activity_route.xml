@@ -40,10 +40,14 @@
                 </LinearLayout>
             </LinearLayout>
             <Button
+                android:id="@+id/stopButton"
                 android:layout_width="160px"
                 android:layout_marginRight="2dp"
                 android:textSize="10dp"
-                android:layout_height="fill_parent" android:text="Stop" android:onClick="onStopClick" />
+                android:layout_height="fill_parent"
+                android:text="Stop"
+                android:textColor="#A9A9A9"
+                android:background="@drawable/shape"/>
     </LinearLayout>
     <fragment
         android:layout_width="match_parent"

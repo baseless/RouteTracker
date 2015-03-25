@@ -11,6 +11,9 @@ import android.content.IntentFilter;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.TextView;
 import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
@@ -38,6 +41,17 @@ public class RouteActivity extends FragmentActivity {
         setContentView(R.layout.activity_route);
         app = (RouteApplication)getApplicationContext();
         statisticsService = new StatisticsService(app.getRouteLocations());
+        final Animation animation = AnimationUtils.loadAnimation(this, R.anim.animation_button);
+        Button button = (Button)findViewById(R.id.stopButton);
+        button.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.startAnimation(animation);
+                app.stopRoute();
+                Intent switchToRoute = new Intent(RouteActivity.this, ResultActivity.class);
+                startActivity(switchToRoute);
+            }
+        });
     }
 
     @Override
@@ -65,11 +79,5 @@ public class RouteActivity extends FragmentActivity {
         curSpeed.setText(statisticsService.getCurrentSpeed() + " m/s");
         dist.setText(String.format("%.2f",app.getRouteDistance()) + " m");
         time.setText(statisticsService.getElapsedTime());
-    }
-
-    public void onStopClick(View v) {
-        app.stopRoute();
-        Intent switchToRoute = new Intent(RouteActivity.this, ResultActivity.class);
-        startActivity(switchToRoute);
     }
 }

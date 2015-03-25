@@ -22,7 +22,6 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/shape"
         android:textColor="#A9A9A9"
-        android:onClick="onStartClick"
         />
 
     <ImageView
