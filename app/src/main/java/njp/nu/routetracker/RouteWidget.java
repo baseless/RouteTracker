@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 /**
@@ -34,7 +35,7 @@ public class RouteWidget extends AppWidgetProvider {
 
         remoteViews.setOnClickPendingIntent(R.id.startWidgetButton, getPendingIntent(context, WIDGET_START_CLICK));
         remoteViews.setOnClickPendingIntent(R.id.stopWidgetButton, getPendingIntent(context, WIDGET_STOP_CLICK));
-        remoteViews.setOnClickPendingIntent(R.id.stopWidgetButton, getPendingIntent(context, WIDGET_ICON_CLICK));
+        remoteViews.setOnClickPendingIntent(R.id.widgetImage, getPendingIntent(context, WIDGET_ICON_CLICK));
         appWidgetManager.updateAppWidget(watchWidget, remoteViews);
     }
 
@@ -47,21 +48,26 @@ public class RouteWidget extends AppWidgetProvider {
         RouteApplication app = (RouteApplication)context.getApplicationContext();
 
         if (WIDGET_START_CLICK.equals(intent.getAction())) {
+            Log.i("", "WIDGET - CLICKED START");
             app.startRoute();
             Uri imgStarted = Uri.parse("android.resource://" + context.getPackageName() + "/drawable/icon_njp_act");
             remoteViews.setImageViewUri(R.id.widgetImage, imgStarted);
             appWidgetManager.updateAppWidget(watchWidget, remoteViews);
         } else if(WIDGET_STOP_CLICK.equals(intent.getAction())) {
+            Log.i("", "WIDGET - CLICKED STOP");
             app.stopRoute();
             Uri imgStopped = Uri.parse("android.resource://" + context.getPackageName() + "/drawable/icon_njp");
             remoteViews.setImageViewUri(R.id.widgetImage, imgStopped);
             appWidgetManager.updateAppWidget(watchWidget, remoteViews);
-        }else if(WIDGET_ICON_CLICK.equals(intent.getAction())) {
+        }else if(WIDGET_ICON_CLICK.equals(intent.getAction())) { //open activity
+            Intent redirectIntent;
             if(app.isStarted()) {
-
+                redirectIntent = new Intent(context, RouteActivity.class);
             } else {
-
+                redirectIntent = new Intent(context, StartActivity.class);
             }
+            redirectIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            app.startActivity(redirectIntent);
         }
     }
 

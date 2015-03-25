@@ -56,9 +56,6 @@
         <receiver android:name=".RouteWidget" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="njp.nu.routetracker.RouteWidget.WIDGET_START_CLICK" />
-                <action android:name="njp.nu.routetracker.RouteWidget.WIDGET_STOP_CLICK" />
-                <action android:name="njp.nu.routetracker.RouteWidget.WIDGET_ICON_CLICK" />
             </intent-filter>
 
             <meta-data

@@ -63,8 +63,8 @@ public class ScheduledLocationService implements GoogleApiClient.ConnectionCallb
     /* Setup a request with GPS-settings for timed queries*/
     private void createLocationRequest() {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(250);
-        mLocationRequest.setFastestInterval(250);
+        mLocationRequest.setInterval(500);
+        mLocationRequest.setFastestInterval(500);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 

@@ -5,6 +5,8 @@ package njp.nu.routetracker;
  */
 
 import android.app.Application;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.location.Location;
 import android.util.Log;
@@ -63,7 +65,6 @@ public class RouteApplication extends Application {
 
     public void startRoute() {
         if(!isStarted) {
-            isStarted = true;
             Log.i("", "startRoute");
             clearRouteCoordinates();
             routeDistance = 0;
@@ -74,16 +75,19 @@ public class RouteApplication extends Application {
                 public void run() {
                     broadcastRoutePulse();
                 }
-            }, 100, 500);
+            }, 100, 1000);
+            isStarted = true;
+            broadcastWidgetUpdate();
         }
     }
 
     public void stopRoute() {
         if(isStarted) {
-            isStarted = false;
             locationService.stopLocationUpdates();
             routeTimer.cancel();
             routeTimer.purge();
+            isStarted = false;
+            broadcastWidgetUpdate();
         }
     }
 
@@ -110,10 +114,11 @@ public class RouteApplication extends Application {
         sendBroadcast(i);
     }
 
-    /**
-     * Created by Andreas on 2015-03-25.
-     */
-    public static class AppWidgetProvider {
-
+    private void broadcastWidgetUpdate() {
+        int[] widgetIds =AppWidgetManager.getInstance(this).getAppWidgetIds(new ComponentName(this, RouteWidget.class));
+        Intent intent = new Intent(this,RouteWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,widgetIds);
+        sendBroadcast(intent);
     }
 }
