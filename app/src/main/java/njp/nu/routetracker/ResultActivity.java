@@ -40,6 +40,6 @@ public class ResultActivity extends ActionBarActivity {
         float dist = app.getRouteDistance();
         time.setText("Time to complete the route: " + stats.getElapsedTime());
         avgSpeed.setText("Average speed: " + String.format("%.2f",stats.getAverageSpeed(dist)) + " m/s");
-        distance.setText("Time traveled: " + String.format("%.2f",dist) + " meters");
+        distance.setText("Distance traveled: " + String.format("%.2f",dist) + " meters");
     }
 }
